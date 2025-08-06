@@ -19,21 +19,21 @@ This is a simple and intuitive web application built with Streamlit that allows 
 ## **Installation & Setup**
 
 1. **Clone the repository or download the script:**  
-   git clone https://github.com/ntovarsolorzano/sora-api-streamlit.git  
-   cd sora-api-streamlit  
+   `git clone https://github.com/ntovarsolorzano/sora-api-streamlit.git`
+   `cd sora-api-streamlit`  
    generated  
 2. **Install the required Python libraries:**  
-   pip install streamlit openai pandas python-dotenv Pillow requests
+   `pip install streamlit openai pandas python-dotenv Pillow requests`
 
-3. Set up your OpenAI API Key:  
+3. **Set up your OpenAI API Key:**  
    Create a file named .env in the same directory as the script with the following content:  
-   OPENAI\_API\_KEY="your\_api\_key\_here"
+   `OPENAI_API_KEY="your\_api\_key\_here"`
 
    Replace "your\_api\_key\_here" with your actual API key.
 
 ## **Usage**
 
 Run the Streamlit application from your terminal:  
-streamlit run sora-via-api.py  
+`streamlit run sora-via-api.py`  
 generated  
 This will open the app in your default web browser.
