@@ -21,7 +21,7 @@ This is a simple and intuitive web application built with Streamlit that allows 
 1. **Clone the repository or download the script:**  
    `git clone https://github.com/ntovarsolorzano/sora-api-streamlit.git`
    `cd sora-api-streamlit`  
-   generated  
+
 2. **Install the required Python libraries:**  
    `pip install streamlit openai pandas python-dotenv Pillow requests`
 
@@ -35,5 +35,5 @@ This is a simple and intuitive web application built with Streamlit that allows 
 
 Run the Streamlit application from your terminal:  
 `streamlit run sora-via-api.py`  
-generated  
+
 This will open the app in your default web browser.
