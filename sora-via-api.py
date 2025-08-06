@@ -270,22 +270,27 @@ def main():
             min_value=0.0,
             value=5.0,
             step=0.50,
-            help="Set your daily spending limit"
+            help="Set your daily spending limit. A value of $0.00 is considered infinite."
         )
         
         # Today's spending only
         today_spent = spending_summary['today']
-        remaining_budget = max(0, daily_budget - today_spent)
-        
-        st.metric("Today's Spending", f"${today_spent:.3f}", f"${remaining_budget:.3f} remaining")
-        
-        # Budget status indicator
-        if today_spent >= daily_budget:
-            st.error("⚠️ Daily budget exceeded!")
-        elif today_spent >= daily_budget * 0.8:
-            st.warning("⚠️ 80% of daily budget used")
+
+        # Custom display for infinite budget
+        if daily_budget == 0:
+            st.metric("Today's Spending", f"${today_spent:.3f}", "Infinite remaining")
+            st.success("✅ Budget is set to infinite.")
         else:
-            st.success(f"✅ {((today_spent/daily_budget)*100):.1f}% of budget used")
+            remaining_budget = max(0, daily_budget - today_spent)
+            st.metric("Today's Spending", f"${today_spent:.3f}", f"${remaining_budget:.3f} remaining")
+            
+            # Budget status indicator
+            if today_spent >= daily_budget:
+                st.error("⚠️ Daily budget exceeded!")
+            elif today_spent >= daily_budget * 0.8:
+                st.warning("⚠️ 80% of daily budget used")
+            else:
+                st.success(f"✅ {((today_spent/daily_budget)*100):.1f}% of budget used")
         
         st.markdown("---")
         
@@ -410,15 +415,18 @@ def main():
             
             # Generate button with budget check
             budget_check_passed = True
-            if spending_summary['today'] >= daily_budget:
-                st.error("⚠️ Daily budget exceeded! Adjust your budget in the sidebar or wait until tomorrow.")
-                budget_check_passed = False
             
-            estimated_cost = cost_per_image * n_images
-            if spending_summary['today'] + estimated_cost > daily_budget:
-                st.warning(f"⚠️ This generation (${estimated_cost:.3f}) would exceed your daily budget!")
-                budget_override = st.checkbox("Generate anyway (override budget)", key="budget_override")
-                budget_check_passed = budget_override
+            # Only perform budget checks if a positive budget is set
+            if daily_budget > 0:
+                if spending_summary['today'] >= daily_budget:
+                    st.error("⚠️ Daily budget exceeded! Adjust your budget in the sidebar or wait until tomorrow.")
+                    budget_check_passed = False
+                
+                estimated_cost = cost_per_image * n_images
+                if spending_summary['today'] + estimated_cost > daily_budget:
+                    st.warning(f"⚠️ This generation (${estimated_cost:.3f}) would exceed your daily budget!")
+                    budget_override = st.checkbox("Generate anyway (override budget)", key="budget_override")
+                    budget_check_passed = budget_override
             
             if st.button("🎨 Generate Images", type="primary", use_container_width=True, disabled=not budget_check_passed):
                 if not prompt:
